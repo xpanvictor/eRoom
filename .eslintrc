@@ -5,13 +5,24 @@
     "@typescript-eslint",
     "prettier"
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "airbnb",
+    "airbnb-base",
+    "airbnb-typescript/base",
     "prettier"
   ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "rules": {
     "prettier/prettier": 2
   }

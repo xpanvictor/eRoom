@@ -1,5 +1,5 @@
-const server_config = {
+const serverConfig = {
   PORT: process.env.PORT || 4015,
 };
 
-module.exports = server_config;
+export default serverConfig;
