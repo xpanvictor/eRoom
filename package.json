@@ -1,0 +1,12 @@
+{
+  "name": "eRoom",
+  "version": "1.0.0",
+  "description": "The rewritten form of eClass. This is an API revision",
+  "main": "index.js",
+  "repository": "https://github.com/xpanvictor/eRoom.git",
+  "author": "xpan <xpanvictor@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
