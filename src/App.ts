@@ -2,7 +2,6 @@ import express, { Application, Response } from "express";
 import V1Router from "./routes";
 
 const app: Application = express();
-const man = "ssss";
 
 // middlewares
 
