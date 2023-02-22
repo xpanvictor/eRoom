@@ -14,7 +14,8 @@
     "build": "rimraf ./build && tsc",
     "start": "yarn build && node build/index.js",
     "lint": "./node_modules/.bin/eslint . --ext .ts --fix",
-    "prettier-watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}"
+    "prettier-watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
+    "prepare": "husky install"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -33,6 +34,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^8.0.3",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",

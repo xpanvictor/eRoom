@@ -24,6 +24,7 @@
     "project": "./tsconfig.json"
   },
   "rules": {
-    "prettier/prettier": 2
+    "prettier/prettier": 2,
+    "import/no-import-module-exports": 0
   }
 }
