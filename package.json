@@ -10,9 +10,9 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "start:dev": "npx nodemon",
+    "start:dev": "ENV=dev && npx nodemon",
     "build": "rimraf ./build && tsc",
-    "start": "yarn build && node build/index.js",
+    "start": "ENV=prod && yarn build && node build/index.js",
     "lint": "./node_modules/.bin/eslint . --ext .ts --fix",
     "prettier-watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
     "prepare": "husky install"

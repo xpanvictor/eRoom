@@ -12,9 +12,9 @@ function main() {
   Exception.unhandledRejection(server);
   Exception.unhandledException();
   // listener
-  const { PORT } = serverConfig;
+  const { ENV, PORT } = serverConfig;
   server.listen(PORT, () => {
-    console.log(`💯server listening at localhost:${PORT}`);
+    console.log(`${ENV.toUpperCase()} 💯server listening at localhost:${PORT}`);
   });
 }
 
