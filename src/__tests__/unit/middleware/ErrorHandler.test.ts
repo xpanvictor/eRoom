@@ -1,14 +1,12 @@
-import { jest, describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 import ErrorHandler from "../../../middlewares/errorHandler";
+import { buildNext, buildReq, buildRes } from "../../globals/generate";
 
 describe("--------Testing the Error handling middleware---------", () => {
   const error = new Error("Some random error!");
-  const req = {};
-  const res = {
-    json: jest.fn(() => res),
-    status: jest.fn(() => res),
-  };
-  const next = jest.fn();
+  const req = buildReq();
+  const res = buildRes();
+  const next = buildNext();
 
   test("Excuse errors taken care of already!", () => {
     res.headersSent = true;
