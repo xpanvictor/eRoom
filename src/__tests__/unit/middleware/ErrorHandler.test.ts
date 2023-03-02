@@ -16,4 +16,13 @@ describe("--------Testing the Error handling middleware---------", () => {
     expect(res.json).not.toHaveBeenCalled();
     expect(res.status).not.toHaveBeenCalled();
   });
+
+  test("Handle when request hasnt been responded", () => {
+    res.headersSent = false;
+    ErrorHandler(error, req, res, next);
+    expect(res.json).toHaveBeenCalledTimes(1);
+    expect(res.status).toHaveBeenCalledTimes(1);
+  });
+
+  
 });
