@@ -23,6 +23,4 @@ describe("--------Testing the Error handling middleware---------", () => {
     expect(res.json).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledTimes(1);
   });
-
-  
 });

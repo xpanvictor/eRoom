@@ -7,6 +7,7 @@ import Exception = require("./error/RejectionException/unhandled");
 dotenv.config();
 
 function main() {
+  // todo: work on the socket attachment here
   const server = http.createServer(app);
   // handle runtime ignored errors
   Exception.unhandledRejection(server);
