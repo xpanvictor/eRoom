@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slug from "mongoose-slug-generator";
 import config from "../../constants/config";
 import ProgrammingError from "../../error/technical/ProgrammingError";
 
@@ -12,6 +13,8 @@ export default async function connectMongo() {
       autoIndex: false,
     });
     mongoose.connection.on("connected", () => {
+      // Plugins connect
+      mongoose.plugin(slug);
       console.log(`${conn.connections[0].name} connected with mongoose`);
     });
     conn.connection?.on("disconnect", () => {
