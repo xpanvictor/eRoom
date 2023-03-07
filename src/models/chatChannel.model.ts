@@ -55,7 +55,7 @@ const ChatChannelSchema = new mongoose.Schema<
           channel: {
             type: mongoose.Types.ObjectId,
             ref: "ChatChannel",
-            default: this.id,
+            default: (this as unknown as IChatChannel).id,
           },
         },
       },
