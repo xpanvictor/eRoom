@@ -9,6 +9,7 @@ export default async function connectMongo() {
     const conn = await mongoose.connect(config.MONGO_CONN_URL, {
       retryWrites: false,
       appName: "EClass database",
+      autoIndex: false,
     });
     console.log(`${conn.connections[0].name} connected with mongoose`);
   } catch (e) {
