@@ -47,6 +47,7 @@ const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
       verifyPassword: async (password) =>
         bcrypt.compare(password, (<IUser>(<unknown>this)).password),
     },
+    timestamps: true,
   }
 );
 
