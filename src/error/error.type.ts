@@ -3,4 +3,12 @@ export enum ErrorTypes {
   Programming,
 }
 
-export enum Resp {}
+export enum OperationalType {
+  Database,
+  Network,
+  Overload,
+  DuplicateRequest,
+  RateLimit,
+  // bad data
+  InvalidInput,
+}
