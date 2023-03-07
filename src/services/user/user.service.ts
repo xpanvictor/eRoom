@@ -19,6 +19,8 @@ interface IUser {
   name: string;
   // required unique username
   username: string;
+  // user's password
+  password: string;
   // email of the user
   email: string;
   // classes: Aligns to array of user's classes with type of membership
