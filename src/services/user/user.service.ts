@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 enum IUserType {
   student,
   instructor,
@@ -12,9 +14,11 @@ interface IClassesBelonged {
 
 interface IUser {
   // compulsory id of the user
-  id: string;
+  id: Types.ObjectId;
   // the user's name
   name: string;
+  // required unique username
+  username: string;
   // email of the user
   email: string;
   // classes: Aligns to array of user's classes with type of membership
