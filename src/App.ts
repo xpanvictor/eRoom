@@ -1,20 +1,45 @@
-import express, { Application, Response } from "express";
+import express, { Express, Response } from "express";
+import bodyParser from "body-parser";
 import V1Router from "./routes";
 import ErrorHandler from "./middlewares/errorHandler";
 
-const app: Application = express();
+class App {
+  private readonly _app: Express;
 
-// middlewares
+  get app(): Express {
+    return this._app;
+  }
 
-// router config
-app.get("/", (_, res: Response) => {
-  res.send("Welcome to eClass api root, documentation: ");
-});
+  constructor() {
+    // initiate app
+    this._app = express();
 
-app.use("/api", V1Router);
+    // -----configure the middlewares----
 
-// -------Middlewares--------
-// error handling middleware
-app.use(ErrorHandler);
+    // mount the json parser
+    this._app.use(
+      bodyParser.json({
+        limit: "200kb",
+      })
+    );
+    // mount the express url encoded
+    this._app.use(
+      bodyParser.urlencoded({
+        extended: false,
+      })
+    );
 
-module.exports = app;
+    // ----mount the router class-----
+    // -- api home page first
+    this._app.get("/", (_, res: Response) => {
+      res.send("Welcome to the eClass api home, documentation is here: ");
+    });
+    // -- api version handler
+    this._app.use("/api", V1Router);
+
+    // -- error handler middleware
+    this._app.use(ErrorHandler);
+  }
+}
+
+module.exports = new App().app;
