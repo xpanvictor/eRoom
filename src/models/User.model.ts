@@ -1,40 +1,49 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { HttpStatusCode } from "axios";
-import IUser from "../services/user/user.service";
+import IUser, { IUserMethods, UserModel } from "../services/user/user.type";
 import APIError from "../error/application/APIError";
 import { OperationalType } from "../error/error.type";
 
-const UserSchema = new mongoose.Schema<IUser>({
-  name: {
-    type: String,
-    required: true,
-  },
-  username: {
-    type: String,
-    required: [true, "Username is required!"],
-    unique: true,
-    index: true,
-  },
-  email: {
-    type: String,
-    required: [true, "Email must be provided"],
-  },
-  password: {
-    type: String,
-    required: [true, "Password is required!"],
-    minlength: [8, "Password must be longer than 8 characters"],
-    select: false,
-  },
-  classes: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Class",
+const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
+  {
+    name: {
+      type: String,
+      required: true,
     },
-  ],
-});
+    username: {
+      type: String,
+      required: [true, "Username is required!"],
+      unique: true,
+      index: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Email must be provided"],
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required!"],
+      minlength: [8, "Password must be longer than 8 characters"],
+      select: false,
+    },
+    classes: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Class",
+      },
+    ],
+  },
+  {
+    methods: {
+      verifyPassword: async (password) =>
+        bcrypt.compare(password, (<IUser>(<unknown>this)).password),
+    },
+  }
+);
 
 // methods definition
+// hashing the password
 UserSchema.pre("save", function hashPassword(next) {
   // check if password is present and is modified
   if (this.password && this.isModified("password")) {
@@ -52,4 +61,4 @@ UserSchema.pre("save", function hashPassword(next) {
   next();
 });
 
-export default mongoose.model<IUser>("User", UserSchema);
+export default mongoose.model<IUser, UserModel>("User", UserSchema);

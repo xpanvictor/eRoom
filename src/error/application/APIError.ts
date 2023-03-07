@@ -1,6 +1,6 @@
+import { HttpStatusCode } from "axios";
 import StandardError from "../index";
 import { ErrorTypes, OperationalType } from "../error.type";
-import { HttpStatusCode } from "axios";
 
 class APIError extends StandardError {
   public readonly operational_type: OperationalType;
