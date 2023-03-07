@@ -11,7 +11,12 @@ export default async function connectMongo() {
       appName: "EClass database",
       autoIndex: false,
     });
-    console.log(`${conn.connections[0].name} connected with mongoose`);
+    mongoose.connection.on("connected", () => {
+      console.log(`${conn.connections[0].name} connected with mongoose`);
+    });
+    conn.connection?.on("disconnect", () => {
+      console.log(`${conn.connections[0].name} disconnected!`);
+    });
   } catch (e) {
     console.log(e);
   }

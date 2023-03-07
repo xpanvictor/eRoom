@@ -27,6 +27,14 @@ const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
       minlength: [8, "Password must be longer than 8 characters"],
       select: false,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    avatar: {
+      type: String,
+      default: "a random user avatar", // todo: fix in a picture
+    },
     classes: [
       {
         type: mongoose.Types.ObjectId,

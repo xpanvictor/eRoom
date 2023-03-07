@@ -17,10 +17,14 @@ interface IUser {
   id: Types.ObjectId;
   // the user's name
   name: string;
+  // user's image
+  avatar: string;
   // required unique username
   username: string;
   // user's password
   password: string;
+  // verified: is user's email verified
+  verified: boolean;
   // email of the user
   email: string;
   // classes: Aligns to array of user's classes with type of membership
