@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import logError from "../utils/logError";
 import ProgrammingError from "../error/technical/ProgrammingError";
+import { ResponseObject, responseSchema } from "./base.types";
 
 class BaseController {
   req: Request;
@@ -10,7 +11,7 @@ class BaseController {
   protected next: NextFunction;
 
   // response data generated
-  private _respData: any; // todo: construct response type
+  private _respData: Partial<ResponseObject> = {};
 
   constructor(req: Request, res: Response, next: NextFunction) {
     this.req = req;
@@ -27,7 +28,10 @@ class BaseController {
     if (this.res.headersSent)
       return logError(new ProgrammingError("Response sent"));
     // validate that response body satisfies requirements
-    this.res.json(this._respData);
+    const { error: errorValidating, value: validatedResponse } =
+      responseSchema.validate(this._respData);
+    if (errorValidating) throw new ProgrammingError(errorValidating.message);
+    this.res.json(validatedResponse);
     return 0;
   }
 }
