@@ -1,5 +1,6 @@
 import express, { Express, Response } from "express";
 import bodyParser from "body-parser";
+import helmet from "helmet";
 import V1Router from "./routes";
 import ErrorHandler from "./middlewares/errorHandler";
 
@@ -15,6 +16,9 @@ class App {
     this._app = express();
 
     // -----configure the middlewares----
+
+    // mount the helmet sanitizer
+    this._app.use(helmet());
 
     // mount the json parser
     this._app.use(
