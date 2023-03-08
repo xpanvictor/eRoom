@@ -15,7 +15,7 @@ function ErrorHandler(
   baseControllerToRespond.populateData({
     message: error.message,
     statusCode: error.httpStatusCode,
-    result: error.stack,
+    result: error.description ?? error.stack,
   });
   baseControllerToRespond.respond();
   if (!error.is_operational) logError(error);
