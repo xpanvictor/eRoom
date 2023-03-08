@@ -11,4 +11,9 @@ UserRouter.registerRoute(RouteMethods.POST, APIRoutes.userLogin, (...args) =>
   new UserController(...args).userLogin()
 );
 
+// POST /register
+UserRouter.registerRoute(RouteMethods.POST, APIRoutes.userRegister, (...args) =>
+  new UserController(...args).userRegister()
+);
+
 export default UserRouter.routerElement;
