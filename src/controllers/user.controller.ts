@@ -1,9 +1,11 @@
 import { HttpStatusCode } from "axios";
+import { MongooseError } from "mongoose";
 import BaseController from "./index";
 import UserDataSchema from "./schemas/user.schema";
 import APIError from "../error/application/APIError";
 import { OperationalType } from "../error/error.type";
 import User from "../models/User.model";
+import DatabaseError from "../error/application/DatabaseError";
 
 class UserController extends BaseController {
   // post request to Register user
@@ -36,11 +38,8 @@ class UserController extends BaseController {
       });
     } catch (errorCreatingUser) {
       if (errorCreatingUser instanceof APIError) throw errorCreatingUser;
-      throw new APIError(
-        "Error while creating user",
-        HttpStatusCode.BadRequest,
-        OperationalType.Database
-      );
+      console.log(errorCreatingUser);
+      return this.next(new DatabaseError(errorCreatingUser as MongooseError));
     }
     return this.respond();
   }

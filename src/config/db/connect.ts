@@ -19,7 +19,7 @@ export default async function connectMongo() {
     await mongoose.connect(config.MONGO_CONN_URL, {
       retryWrites: false,
       appName: "EClass database",
-      autoIndex: false,
+      autoIndex: true,
     });
   } catch (e) {
     console.log(e);
