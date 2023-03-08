@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import logError from "../utils/logError";
 import ProgrammingError from "../error/technical/ProgrammingError";
-import { ResponseObject, responseSchema } from "./base.types";
+import { ResponseObject } from "./base.types";
+import responseSchema from "./schemas/base.schema";
 
 class BaseController {
   req: Request;
@@ -19,7 +20,7 @@ class BaseController {
     this.next = next;
   }
 
-  public populateData(value: Record<string, any>) {
+  public populateData(value: Partial<ResponseObject>) {
     this._respData = { ...this._respData, ...value };
   }
 
@@ -31,7 +32,7 @@ class BaseController {
     const { error: errorValidating, value: validatedResponse } =
       responseSchema.validate(this._respData);
     if (errorValidating) throw new ProgrammingError(errorValidating.message);
-    this.res.json(validatedResponse);
+    this.res.status(validatedResponse?.statusCode).json(validatedResponse);
     return 0;
   }
 }

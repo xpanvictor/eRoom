@@ -1,15 +1,10 @@
-import Joi from "joi";
+import { HttpStatusCode } from "axios";
 
 export interface ResponseObject {
   // the message passed, non-technical
   message: string;
   // status description; optional
+  statusCode: HttpStatusCode;
   status?: string;
-  result: Record<string, any>;
+  result: Record<string, any> | string;
 }
-
-export const responseSchema = Joi.object<ResponseObject>({
-  message: Joi.string().required(),
-  result: Joi.object().required(),
-  status: Joi.string(),
-});

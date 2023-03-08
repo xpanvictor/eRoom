@@ -53,19 +53,19 @@ const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
 
 // methods definition
 // hashing the password
-UserSchema.pre("save", function hashPassword(next) {
+UserSchema.pre("save", async function hashPassword(next) {
   // check if password is present and is modified
   if (this.password && this.isModified("password")) {
     const saltRounds = 10;
-    bcrypt.hash(this.password, saltRounds, (error, hashedPassword) => {
-      if (error)
-        throw new APIError(
-          "Can't hash password!",
-          HttpStatusCode.BadRequest,
-          OperationalType.InvalidInput
-        );
-      this.password = hashedPassword;
-    });
+    try {
+      this.password = await bcrypt.hash(this.password, saltRounds);
+    } catch (errorHashing) {
+      throw new APIError(
+        "Can't hash password!",
+        HttpStatusCode.BadRequest,
+        OperationalType.InvalidInput
+      );
+    }
   }
   next();
 });
