@@ -1,10 +1,11 @@
 import dotenv = require("dotenv");
 import http = require("http");
-import { Server } from "socket.io";
 import serverConfig from "./constants/config";
 import app = require("./App");
 import Exception = require("./error/RejectionException/unhandled");
 import connectMongo from "./config/db/connect";
+import SocketClass from "./config/socket/init";
+import createChatChannel from "./lib/chatChannel";
 
 dotenv.config();
 
@@ -12,11 +13,10 @@ async function main() {
   // HTTP server docked
   const httpServer = http.createServer(app);
   // Socket.io server docked
-  const io = new Server(httpServer, {});
-  io.on("connection", (socket) => {
-    console.log("Socket connection initialized");
-    socket.on("message", (msg) => console.log(msg));
-  });
+  const ioServer = new SocketClass(httpServer);
+  console.log(ioServer.name, "socket has been connected");
+  // pass socket class to chat channel originator
+  createChatChannel(ioServer);
   // handle runtime ignored errors
   Exception.unhandledRejection(httpServer);
   Exception.unhandledException();
