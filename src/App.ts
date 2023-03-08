@@ -39,7 +39,7 @@ class App {
       res.send("Welcome to the eClass api home, documentation is here: ");
     });
     // -- api version handler
-    this._app.use("/api", V1Router);
+    this._app.use("/api/v1", V1Router);
 
     // -- error handler middleware
     this._app.use(ErrorHandler);

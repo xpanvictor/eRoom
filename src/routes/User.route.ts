@@ -1,5 +1,14 @@
-import { Router } from "express";
+import BaseRouter from "./baseRouter";
+import { RouteMethods } from "./routes.type";
+import APIRoutes from "./APIRoutes";
+import UserController from "../controllers/user.controller";
 
-const UserRouter = Router();
+const UserRouter = new BaseRouter("User router");
 
-export default UserRouter;
+// here we mount the user authentication flow
+// POST /login
+UserRouter.registerRoute(RouteMethods.POST, APIRoutes.userLogin, (...args) =>
+  new UserController(...args).userLogin()
+);
+
+export default UserRouter.routerElement;
