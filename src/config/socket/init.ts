@@ -1,4 +1,5 @@
 import { Server, Socket } from "socket.io";
+import helmet from "helmet";
 import * as http from "http";
 import { EventEnums } from "../../lib/types/socket/events.type";
 import ChildSocket from "./ChildSocket";
@@ -10,6 +11,8 @@ class SocketClass {
 
   constructor(httpServer: http.Server, name = "Chat Socket") {
     this._socketServer = new Server(httpServer, {});
+    // sanitization
+    this._socketServer.engine.use(helmet());
     this.name = name;
   }
 

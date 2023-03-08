@@ -25,6 +25,7 @@ const handleChat: Listener<Partial<ChatMessage>> = (payload, callBack) => {
   // temporary channel data store
   // perform necessary action for event
   if (typeof callBack === "function") {
+    // todo: sanitize or remove cb, security risk
     callBack();
   }
   // permanently push channel data to mongo store
