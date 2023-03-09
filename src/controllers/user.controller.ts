@@ -70,8 +70,8 @@ class UserController extends BaseController {
           const authenticatedUser = this.req.user;
           // todo: create otp object using jwt
           // todo: save otp for user
-          authenticatedUser?.sendMail(pin);
           // send pin through mail service
+          authenticatedUser.sendMail(pin);
           // todo: useful response object
           this.populateData({
             message: "user otp",
