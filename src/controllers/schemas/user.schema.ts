@@ -23,7 +23,7 @@ const UserDataSchema = Joi.object<IUser>().keys({
 
 export const VerifyUserSchame = Joi.object<VerificationPayload>().keys({
   action: Joi.any()
-    .allow(Object.values(VerificationActions))
+    .allow(...Object.values(VerificationActions))
     .default(VerificationActions.verifyOTP),
   otp: Joi.string().length(6).when("action", {
     is: VerificationActions.verifyOTP,
