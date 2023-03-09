@@ -15,7 +15,7 @@ class BaseController {
   private _respData: Partial<ResponseObject> = {};
 
   constructor(req: Request, res: Response, next: NextFunction) {
-    this.req = req;
+    this.req = req as ModifiedRequest; // find a way to justify this
     this.res = res;
     this.next = next;
   }
