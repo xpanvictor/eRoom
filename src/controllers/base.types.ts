@@ -12,5 +12,5 @@ export interface ResponseObject {
 }
 
 export interface ModifiedRequest extends Request {
-  user: UserService;
+  user?: UserService;
 }

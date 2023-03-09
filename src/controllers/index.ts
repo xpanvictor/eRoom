@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import logError from "../utils/logError";
 import ProgrammingError from "../error/technical/ProgrammingError";
 import { ModifiedRequest, ResponseObject } from "./base.types";
 import responseSchema from "./schemas/base.schema";
 
 class BaseController {
-  req: ModifiedRequest;
+  protected req: ModifiedRequest;
 
   protected res: Response;
 
@@ -14,8 +14,8 @@ class BaseController {
   // response data generated
   private _respData: Partial<ResponseObject> = {};
 
-  constructor(req: Request, res: Response, next: NextFunction) {
-    this.req = req as ModifiedRequest; // find a way to justify this
+  constructor(req: ModifiedRequest, res: Response, next: NextFunction) {
+    this.req = req; // find a way to justify this
     this.res = res;
     this.next = next;
   }
