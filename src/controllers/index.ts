@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import logError from "../utils/logError";
 import ProgrammingError from "../error/technical/ProgrammingError";
-import { ResponseObject } from "./base.types";
+import { ModifiedRequest, ResponseObject } from "./base.types";
 import responseSchema from "./schemas/base.schema";
 
 class BaseController {
-  req: Request;
+  req: ModifiedRequest;
 
   protected res: Response;
 
