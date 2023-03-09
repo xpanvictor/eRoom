@@ -11,4 +11,5 @@ export enum OperationalType {
   RateLimit,
   // bad data
   InvalidInput,
+  AuthenticationFailed,
 }

@@ -1,6 +1,7 @@
 const APIRoutes = {
   userLogin: "/login",
   userRegister: "/register",
+  userVerify: "/verify-user",
 };
 
 export type APIRoutesTitles = keyof typeof APIRoutes;

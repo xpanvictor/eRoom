@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response, Router } from "express";
-import { RouteMethods } from "./routes.type";
+import { Router } from "express";
+import { ListenerType, RouteMethods } from "./routes.type";
 import { APIRoutesValues } from "./APIRoutes";
 
 class RouterClass {
@@ -22,9 +22,11 @@ class RouterClass {
     // the path to listen, use APIRoutes object
     path: APIRoutesValues,
     // the path listener function, feeds in req, res and next; return void
-    listener: (req: Request, res: Response, next: NextFunction) => void
+    listener: ListenerType,
+    // listeners to append to route
+    middlewares: Array<ListenerType> = []
   ) {
-    this._routerElement[method](path, listener);
+    this._routerElement[method](path, ...middlewares, listener);
   }
 }
 

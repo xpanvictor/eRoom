@@ -1,8 +1,20 @@
-import { Model, Types } from "mongoose";
+import { Document, Model, Types } from "mongoose";
 
 enum IUserType {
   student,
   instructor,
+}
+
+export enum VerificationActions {
+  // gets the otp
+  getOTP = "getOTP",
+  // verify the otp
+  verifyOTP = "verifyOTP",
+}
+
+export interface VerificationPayload {
+  action: VerificationActions;
+  otp?: string;
 }
 
 interface IClassesBelonged {
@@ -38,5 +50,7 @@ export interface IUserMethods {
 }
 
 export type UserModel = Model<IUser, object, IUserMethods>;
+
+export type UserDocument = IUser & Document;
 
 export default IUser;

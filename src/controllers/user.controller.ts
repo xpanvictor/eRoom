@@ -1,11 +1,13 @@
 import { HttpStatusCode } from "axios";
 import { MongooseError } from "mongoose";
 import BaseController from "./index";
-import UserDataSchema from "./schemas/user.schema";
+import UserDataSchema, { VerifyUserSchame } from "./schemas/user.schema";
 import APIError from "../error/application/APIError";
 import { OperationalType } from "../error/error.type";
 import User from "../models/User.model";
 import DatabaseError from "../error/application/DatabaseError";
+import { VerificationActions } from "../services/user/user.type";
+import { generatePin } from "../utils/crypt/otp";
 
 class UserController extends BaseController {
   // post request to Register user
@@ -31,6 +33,8 @@ class UserController extends BaseController {
       const newUser = new User(validatedUserDetails);
       await newUser.save();
       // todo: user service generate tokens
+      // generate otp and send
+
       this.populateData({
         message: `User ${newUser.username} created successfully`,
         result: newUser,
@@ -38,10 +42,40 @@ class UserController extends BaseController {
       });
     } catch (errorCreatingUser) {
       if (errorCreatingUser instanceof APIError) throw errorCreatingUser;
-      console.log(errorCreatingUser);
       return this.next(new DatabaseError(errorCreatingUser as MongooseError));
     }
     return this.respond();
+  }
+
+  public async verifyUser() {
+    const rawPayload = this.req.body;
+    const { error: payloadError, value: payload } =
+      VerifyUserSchame.validate(rawPayload);
+
+    const lengthOfPin = 6;
+
+    if (payloadError)
+      return this.next(
+        new APIError(
+          payloadError.message,
+          HttpStatusCode.BadRequest,
+          OperationalType.InvalidInput
+        )
+      );
+    // switch to make endpoint for two actions, default is verify otp
+    switch (payload.action) {
+      case VerificationActions.getOTP:
+        try {
+          const pin = generatePin(lengthOfPin);
+          // send pin through mail service
+          console.log(pin);
+        } catch (errorGeneratingPin) {
+          this.next(errorGeneratingPin);
+        }
+        return this.respond();
+      default: // case VerificationActions.verifyOTP
+        return this.respond();
+    }
   }
 
   public userLogin() {
