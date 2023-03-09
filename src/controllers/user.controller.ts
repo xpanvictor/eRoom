@@ -66,15 +66,16 @@ class UserController extends BaseController {
     switch (payload.action) {
       case VerificationActions.getOTP:
         try {
-          const otp = generatePin(lengthOfPin);
+          const pin = generatePin(lengthOfPin);
+          const authenticatedUser = this.req.user;
+          // todo: create otp object using jwt
+          // todo: save otp for user
+          authenticatedUser?.sendMail(pin);
+          // send pin through mail service
+          // todo: useful response object
           this.populateData({
             message: "user otp",
-            result: { otp },
           });
-          const authenticatedUser = this.req.user;
-          authenticatedUser?.sendMail(otp);
-          // send pin through mail service
-          console.log(otp);
         } catch (errorGeneratingPin) {
           this.next(errorGeneratingPin);
         }
