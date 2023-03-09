@@ -8,7 +8,7 @@ class UserService {
   }
 
   // todo: make message type
-  public sendMail(message: string) {
+  public sendMail(message: string | number) {
     console.log(message, this.user.name);
   }
 }
