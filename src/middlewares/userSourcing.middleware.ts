@@ -18,7 +18,7 @@ const UserSourcingMiddleware: ListenerType = async (req, res, next) => {
       )
     );
   req.user = new UserService(user);
-  return 0;
+  return next();
 };
 
 export default UserSourcingMiddleware;

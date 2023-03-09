@@ -2,6 +2,7 @@ import BaseRouter from "./baseRouter";
 import { RouteMethods } from "./routes.type";
 import APIRoutes from "./APIRoutes";
 import UserController from "../controllers/user.controller";
+import UserSourcingMiddleware from "../middlewares/userSourcing.middleware";
 
 const UserRouter = new BaseRouter("User router");
 
@@ -30,8 +31,11 @@ UserRouter.registerRoute(RouteMethods.POST, APIRoutes.userRegister, (...args) =>
  *   action: getOTP | verifyOTP (default),
  *   otp?: number required for verifyOTP
  * */
-UserRouter.registerRoute(RouteMethods.POST, APIRoutes.userVerify, (...args) =>
-  new UserController(...args).verifyUser()
+UserRouter.registerRoute(
+  RouteMethods.POST,
+  APIRoutes.userVerify,
+  (...args) => new UserController(...args).verifyUser(),
+  [UserSourcingMiddleware]
 );
 
 export default UserRouter.routerElement;
