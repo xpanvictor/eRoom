@@ -11,9 +11,23 @@ UserRouter.registerRoute(RouteMethods.POST, APIRoutes.userLogin, (...args) =>
   new UserController(...args).userLogin()
 );
 
-// POST /register
+/*
+ * POST /register
+ * body: {
+ *   username: string,
+ *   password: alphanum,
+ *   email: string,
+ *   dob: Date Nullable,
+ *   // others
+ * }
+ * */
 UserRouter.registerRoute(RouteMethods.POST, APIRoutes.userRegister, (...args) =>
   new UserController(...args).userRegister()
+);
+
+// POST /verify-user
+UserRouter.registerRoute(RouteMethods.POST, APIRoutes.userVerify, (...args) =>
+  new UserController(...args).verifyUser()
 );
 
 export default UserRouter.routerElement;
