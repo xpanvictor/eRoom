@@ -53,6 +53,8 @@ interface IUser {
 export interface OTPStruct {
   feature: OTPFeautures;
   otp: string;
+  iat?: Date;
+  exp?: Date;
 }
 
 export interface IUserMethods {
