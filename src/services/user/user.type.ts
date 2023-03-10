@@ -12,6 +12,10 @@ export enum VerificationActions {
   verifyOTP = "verifyOTP",
 }
 
+export enum OTPFeautures {
+  verification = "verification",
+}
+
 export interface VerificationPayload {
   action: VerificationActions;
   otp?: string;
@@ -39,9 +43,16 @@ interface IUser {
   verified: boolean;
   // email of the user
   email: string;
+  // otp for otpfeatures
+  otp: string;
   // classes: Aligns to array of user's classes with type of membership
   classes: Types.Array<IClassesBelonged>;
   // todo: map out remaining user type
+}
+
+export interface OTPStruct {
+  feature: OTPFeautures;
+  otp: string;
 }
 
 export interface IUserMethods {

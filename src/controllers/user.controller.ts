@@ -1,13 +1,23 @@
 import { HttpStatusCode } from "axios";
 import { MongooseError } from "mongoose";
 import BaseController from "./index";
-import UserDataSchema, { VerifyUserSchame } from "./schemas/user.schema";
+import UserDataSchema, {
+  UserOTPSchema,
+  VerifyUserSchame,
+} from "./schemas/user.schema";
 import APIError from "../error/application/APIError";
 import { OperationalType } from "../error/error.type";
 import User from "../models/User.model";
 import DatabaseError from "../error/application/DatabaseError";
-import { VerificationActions } from "../services/user/user.type";
+import {
+  OTPFeautures,
+  OTPStruct,
+  VerificationActions,
+} from "../services/user/user.type";
 import { generatePin } from "../utils/crypt/otp";
+import { TMailMessage } from "../utils/mail/mail.type";
+import { encodeJWT } from "../utils/crypt/jwt";
+import ProgrammingError from "../error/technical/ProgrammingError";
 
 class UserController extends BaseController {
   // post request to Register user
@@ -51,6 +61,12 @@ class UserController extends BaseController {
     const rawPayload = this.req.body;
     const { error: payloadError, value: payload } =
       VerifyUserSchame.validate(rawPayload);
+    // ensure user class in req body
+    const authenticatedUser = this.req.user;
+    if (!authenticatedUser)
+      return this.next(
+        new ProgrammingError("User not filled from authentication middleware")
+      );
 
     const lengthOfPin = 6;
 
@@ -67,22 +83,40 @@ class UserController extends BaseController {
       case VerificationActions.getOTP:
         try {
           const pin = generatePin(lengthOfPin);
-          const authenticatedUser = this.req.user;
-          // todo: create otp object using jwt
-          // todo: save otp for user
-          // send pin through mail service
-          authenticatedUser?.sendMail(pin);
+          // create otp object using jwt
+          const otp = encodeJWT<OTPStruct>(
+            {
+              otp: pin.toString(),
+              feature: OTPFeautures.verification,
+            },
+            UserOTPSchema,
+            "2h"
+          );
+          // save otp for user
+          await authenticatedUser.updateUser({ otp });
+          // send pin through mail service; todo: format message
+          const mailMessage: TMailMessage = {
+            subject: "Verify yourself",
+            message: `Use this otp to verify yourself: ${pin}`,
+          };
+          console.log(mailMessage);
+          await authenticatedUser.sendMail(mailMessage);
           // todo: useful response object
           this.populateData({
-            message: "user otp",
+            message: "Mail sent",
+            result: `Check your email: ${authenticatedUser.user.email}`,
           });
-        } catch (errorGeneratingPin) {
-          this.next(errorGeneratingPin);
+          this.respond();
+        } catch (error: any) {
+          this.next(
+            new APIError(error.message, HttpStatusCode.InternalServerError)
+          );
         }
-        return this.respond();
+        break;
       default: // case VerificationActions.verifyOTP
-        return this.respond();
+        break;
     }
+    return 0;
   }
 
   public userLogin() {

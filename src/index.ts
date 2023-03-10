@@ -1,5 +1,6 @@
 import dotenv = require("dotenv");
 import http = require("http");
+import path from "path";
 import serverConfig from "./constants/config";
 import app = require("./App");
 import Exception = require("./error/RejectionException/unhandled");
@@ -7,7 +8,9 @@ import connectMongo from "./config/db/connect";
 import SocketClass from "./config/socket/init";
 import createChatChannel from "./lib/chatChannel";
 
-dotenv.config();
+dotenv.config({
+  path: path.join(__dirname, "../", ".env"),
+});
 
 async function main() {
   // HTTP server docked

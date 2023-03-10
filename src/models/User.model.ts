@@ -4,6 +4,7 @@ import { HttpStatusCode } from "axios";
 import IUser, { IUserMethods, UserModel } from "../services/user/user.type";
 import APIError from "../error/application/APIError";
 import { OperationalType } from "../error/error.type";
+import { defaultAvatar } from "../controllers/schemas/user.schema";
 
 const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
   {
@@ -33,7 +34,11 @@ const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
     },
     avatar: {
       type: String,
-      default: "a random user avatar", // todo: fix in a picture
+      default: defaultAvatar,
+    },
+    otp: {
+      type: String,
+      default: "",
     },
     classes: [
       {
