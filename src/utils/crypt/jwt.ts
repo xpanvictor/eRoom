@@ -39,7 +39,7 @@ export function decodeJWT<T>(encodedJWT: string, payloadSchema: Joi.Schema): T {
     payloadSchema.validate(decodedPayload);
   if (errorValidating)
     throw new APIError(
-      "Bad payload received",
+      errorValidating.message,
       HttpStatusCode.BadRequest,
       OperationalType.InvalidInput
     );

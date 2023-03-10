@@ -16,7 +16,7 @@ import {
 } from "../services/user/user.type";
 import { generatePin } from "../utils/crypt/otp";
 import { TMailMessage } from "../utils/mail/mail.type";
-import { encodeJWT } from "../utils/crypt/jwt";
+import { decodeJWT, encodeJWT } from "../utils/crypt/jwt";
 import ProgrammingError from "../error/technical/ProgrammingError";
 
 class UserController extends BaseController {
@@ -80,6 +80,7 @@ class UserController extends BaseController {
       );
     // switch to make endpoint for two actions, default is verify otp
     switch (payload.action) {
+      // --------------------getOTP--------------------------------
       case VerificationActions.getOTP:
         try {
           const pin = generatePin(lengthOfPin);
@@ -99,7 +100,6 @@ class UserController extends BaseController {
             subject: "Verify yourself",
             message: `Use this otp to verify yourself: ${pin}`,
           };
-          console.log(mailMessage);
           await authenticatedUser.sendMail(mailMessage);
           // todo: useful response object
           this.populateData({
@@ -113,7 +113,50 @@ class UserController extends BaseController {
           );
         }
         break;
+      // ------------------verifyOTP----------------------------------
       default: // case VerificationActions.verifyOTP
+        try {
+          // check if user has been verified already
+          if (authenticatedUser.user.verified)
+            return this.next(
+              new APIError(
+                "User has been verified already",
+                HttpStatusCode.Conflict,
+                OperationalType.DuplicateRequest
+              )
+            );
+          const otpPayload = decodeJWT<OTPStruct>(
+            authenticatedUser.user.otp,
+            UserOTPSchema
+          );
+          if (otpPayload.feature !== OTPFeautures.verification)
+            return this.next(
+              new APIError(
+                "Invalid verification sequence",
+                HttpStatusCode.BadRequest,
+                OperationalType.AuthenticationFailed
+              )
+            );
+          // check if otp is correct
+          if (payload.otp !== otpPayload.otp)
+            return this.next(
+              new APIError(
+                "OTP pin not correct",
+                HttpStatusCode.BadRequest,
+                OperationalType.AuthenticationFailed
+              )
+            );
+          // otp is correct, we can verify user
+          await authenticatedUser.updateUser({ verified: true });
+          this.populateData({
+            message: "Successfully verified user",
+            result: authenticatedUser.user.username,
+            statusCode: HttpStatusCode.Created,
+          });
+          this.respond();
+        } catch (errorValidating: any) {
+          this.next(errorValidating);
+        }
         break;
     }
     return 0;

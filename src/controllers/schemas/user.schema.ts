@@ -37,6 +37,8 @@ export const VerifyUserSchame = Joi.object<VerificationPayload>().keys({
 export const UserOTPSchema = Joi.object<OTPStruct>().keys({
   otp: userOTP,
   feature: Joi.string(),
+  iat: Joi.date(),
+  exp: Joi.date(),
 });
 
 export default UserDataSchema;
