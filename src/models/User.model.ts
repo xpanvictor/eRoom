@@ -40,6 +40,9 @@ const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
       type: String,
       default: "",
     },
+    accessToken: {
+      type: String,
+    },
     classes: [
       {
         type: mongoose.Types.ObjectId,

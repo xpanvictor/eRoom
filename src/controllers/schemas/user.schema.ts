@@ -1,6 +1,8 @@
 import Joi from "joi";
 import IUser, {
   OTPStruct,
+  TokenStruct,
+  TokenType,
   VerificationActions,
   VerificationPayload,
 } from "../../services/user/user.type";
@@ -10,9 +12,11 @@ export const defaultAvatar =
 
 export const passwordRegex = /$/;
 
+const emailSchema = Joi.string().email();
+
 const UserDataSchema = Joi.object<IUser>().keys({
   name: Joi.string().required().trim(),
-  email: Joi.string().email().required(),
+  email: emailSchema.required(),
   avatar: Joi.string().default(defaultAvatar),
   username: Joi.string().required().min(3).trim(),
   password: Joi.string()
@@ -31,6 +35,13 @@ export const UserLoginSchema = Joi.object<
     password: Joi.string(),
   })
   .or("username", "email");
+
+export const UserTokenSchema = Joi.object<TokenStruct>().keys({
+  type: Joi.any().allow(...Object.values(TokenType)),
+  payload: Joi.object({
+    email: emailSchema.required(),
+  }),
+});
 
 const userOTP = Joi.string().length(6);
 

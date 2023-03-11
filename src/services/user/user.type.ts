@@ -16,6 +16,11 @@ export enum OTPFeautures {
   verification = "verification",
 }
 
+export enum TokenType {
+  access = "access",
+  refresh = "refresh",
+}
+
 export interface VerificationPayload {
   action: VerificationActions;
   otp?: string;
@@ -45,16 +50,28 @@ interface IUser {
   email: string;
   // otp for otpfeatures
   otp: string;
+  // access token
+  accessToken: string;
   // classes: Aligns to array of user's classes with type of membership
   classes: Types.Array<IClassesBelonged>;
   // todo: map out remaining user type
 }
 
-export interface OTPStruct {
-  feature: OTPFeautures;
-  otp: string;
+interface JWTBase {
   iat?: Date;
   exp?: Date;
+}
+
+export interface OTPStruct extends JWTBase {
+  feature: OTPFeautures;
+  otp: string;
+}
+
+export interface TokenStruct extends JWTBase {
+  type: TokenType;
+  payload: {
+    email: string;
+  };
 }
 
 export interface IUserMethods {
