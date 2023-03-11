@@ -2,6 +2,7 @@ import { HttpStatusCode } from "axios";
 import { MongooseError } from "mongoose";
 import BaseController from "./index";
 import UserDataSchema, {
+  UserLoginSchema,
   UserOTPSchema,
   VerifyUserSchame,
 } from "./schemas/user.schema";
@@ -18,6 +19,7 @@ import { generatePin } from "../utils/crypt/otp";
 import { TMailMessage } from "../utils/mail/mail.type";
 import { decodeJWT, encodeJWT } from "../utils/crypt/jwt";
 import ProgrammingError from "../error/technical/ProgrammingError";
+import UserService from "../services/user/user.service";
 
 class UserController extends BaseController {
   // post request to Register user
@@ -57,6 +59,7 @@ class UserController extends BaseController {
     return this.respond();
   }
 
+  // post request to verify user
   public async verifyUser() {
     const rawPayload = this.req.body;
     const { error: payloadError, value: payload } =
@@ -101,7 +104,7 @@ class UserController extends BaseController {
             message: `Use this otp to verify yourself: ${pin}`,
           };
           await authenticatedUser.sendMail(mailMessage);
-          // todo: useful response object
+
           this.populateData({
             message: "Mail sent",
             result: `Check your email: ${authenticatedUser.user.email}`,
@@ -148,6 +151,7 @@ class UserController extends BaseController {
             );
           // otp is correct, we can verify user
           await authenticatedUser.updateUser({ verified: true });
+
           this.populateData({
             message: "Successfully verified user",
             result: authenticatedUser.user.username,
@@ -162,9 +166,56 @@ class UserController extends BaseController {
     return 0;
   }
 
-  public userLogin() {
-    console.log("Login request received");
-    this.respond();
+  // post request to user login
+  public async userLogin() {
+    // first retrieve payload and validate
+    const rawPayload = this.req.body;
+    const { error: payloadError, value: payload } =
+      UserLoginSchema.validate(rawPayload);
+    if (payloadError)
+      return this.next(
+        new APIError(
+          payloadError.message,
+          HttpStatusCode.BadRequest,
+          OperationalType.InvalidInput
+        )
+      );
+
+    const fetchedUser = await User.findOne({
+      username: payload?.username,
+      email: payload?.email,
+    }).select("+password");
+    if (!fetchedUser)
+      return this.next(
+        new APIError(
+          `User ${payload?.email || payload?.username} does not exist`,
+          HttpStatusCode.BadRequest,
+          OperationalType.AuthenticationFailed
+        )
+      );
+
+    // verify user password
+    const userVerified = await fetchedUser.verifyPassword(payload.password);
+    if (!userVerified)
+      return this.next(
+        new APIError(
+          "Provided password is wrong",
+          HttpStatusCode.BadRequest,
+          OperationalType.AuthenticationFailed
+        )
+      );
+
+    const authenticatedUser = new UserService(fetchedUser);
+
+    // verification success
+    // todo: token system integration
+    this.populateData({
+      message: `User ${authenticatedUser.user.username} authenticated successfully`,
+      statusCode: HttpStatusCode.Ok,
+      result: authenticatedUser.user,
+      status: "Authentication success",
+    });
+    return this.respond();
   }
 }
 
