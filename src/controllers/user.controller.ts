@@ -5,7 +5,7 @@ import UserDataSchema, {
   UserLoginSchema,
   UserOTPSchema,
   UserTokenSchema,
-  VerifyUserSchame,
+  VerifyUserSchema,
 } from "./schemas/user.schema";
 import APIError from "../error/application/APIError";
 import { OperationalType } from "../error/error.type";
@@ -66,7 +66,7 @@ class UserController extends BaseController {
   public async verifyUser() {
     const rawPayload = this.req.body;
     const { error: payloadError, value: payload } =
-      VerifyUserSchame.validate(rawPayload);
+      VerifyUserSchema.validate(rawPayload);
     // ensure user class in req body
     const authenticatedUser = this.req.user;
     if (!authenticatedUser)
