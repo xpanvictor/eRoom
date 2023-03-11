@@ -40,6 +40,7 @@ const UserSourcingMiddleware: ListenerType = async (req, res, next) => {
         OperationalType.AuthenticationFailed
       )
     );
+  // ! confirm if to prevent a different but valid access token
   req.user = new UserService(user);
   return next();
 };
