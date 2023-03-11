@@ -4,6 +4,7 @@ import BaseController from "./index";
 import UserDataSchema, {
   UserLoginSchema,
   UserOTPSchema,
+  UserTokenSchema,
   VerifyUserSchame,
 } from "./schemas/user.schema";
 import APIError from "../error/application/APIError";
@@ -13,6 +14,8 @@ import DatabaseError from "../error/application/DatabaseError";
 import {
   OTPFeautures,
   OTPStruct,
+  TokenStruct,
+  TokenType,
   VerificationActions,
 } from "../services/user/user.type";
 import { generatePin } from "../utils/crypt/otp";
@@ -94,7 +97,7 @@ class UserController extends BaseController {
               feature: OTPFeautures.verification,
             },
             UserOTPSchema,
-            "2h"
+            "1d"
           );
           // save otp for user
           await authenticatedUser.updateUser({ otp });
@@ -181,10 +184,9 @@ class UserController extends BaseController {
         )
       );
 
-    const fetchedUser = await User.findOne({
-      username: payload?.username,
-      email: payload?.email,
-    }).select("+password");
+    const fetchedUser = await User.findOne(
+      payload.email ? { email: payload.email } : { username: payload.username }
+    ).select("+password");
     if (!fetchedUser)
       return this.next(
         new APIError(
@@ -208,11 +210,24 @@ class UserController extends BaseController {
     const authenticatedUser = new UserService(fetchedUser);
 
     // verification success
-    // todo: token system integration
+    // access token generation
+    const accessToken = encodeJWT<TokenStruct>(
+      {
+        type: TokenType.access,
+        payload: { email: authenticatedUser.user.email },
+      },
+      UserTokenSchema,
+      "1d"
+    );
+    await authenticatedUser.updateUser({ accessToken });
+
     this.populateData({
       message: `User ${authenticatedUser.user.username} authenticated successfully`,
       statusCode: HttpStatusCode.Ok,
-      result: authenticatedUser.user,
+      result: {
+        accessToken,
+        avatar: authenticatedUser.user.avatar,
+      },
       status: "Authentication success",
     });
     return this.respond();
