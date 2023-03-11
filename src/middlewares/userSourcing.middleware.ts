@@ -25,7 +25,9 @@ const UserSourcingMiddleware: ListenerType = async (req, res, next) => {
   try {
     decodedToken = decodeJWT<TokenStruct>(accessToken, UserTokenSchema);
     if (decodedToken.type !== TokenType.access)
-      throw new APIError("Invalid access token", HttpStatusCode.Forbidden);
+      return next(
+        new APIError("Invalid access token", HttpStatusCode.Forbidden)
+      );
   } catch (errorValidatingSession) {
     return next(errorValidatingSession);
   }
