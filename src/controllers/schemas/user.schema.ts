@@ -6,6 +6,7 @@ import IUser, {
   VerificationActions,
   VerificationPayload,
 } from "../../services/user/user.type";
+import { jwtBase } from "../base.types";
 
 export const defaultAvatar =
   "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.winhelponline.com%2Fblog%2Freplace-default-user-account-picture-avatar-windows-10%2F&psig=AOvVaw3kW5z5H8elLbppdumdJou3&ust=1678381923482000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCOj-rZ7qzP0CFQAAAAAdAAAAABAE";
@@ -41,11 +42,12 @@ export const UserTokenSchema = Joi.object<TokenStruct>().keys({
   payload: Joi.object({
     email: emailSchema.required(),
   }),
+  ...jwtBase,
 });
 
 const userOTP = Joi.string().length(6);
 
-export const VerifyUserSchame = Joi.object<VerificationPayload>().keys({
+export const VerifyUserSchema = Joi.object<VerificationPayload>().keys({
   action: Joi.any()
     .allow(...Object.values(VerificationActions))
     .default(VerificationActions.verifyOTP),
@@ -53,13 +55,12 @@ export const VerifyUserSchame = Joi.object<VerificationPayload>().keys({
     is: VerificationActions.verifyOTP,
     then: Joi.required(),
   }),
+  ...jwtBase,
 });
 
 export const UserOTPSchema = Joi.object<OTPStruct>().keys({
   otp: userOTP,
   feature: Joi.string(),
-  iat: Joi.date(),
-  exp: Joi.date(),
+  ...jwtBase,
 });
-
 export default UserDataSchema;
