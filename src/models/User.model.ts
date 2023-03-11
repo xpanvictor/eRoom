@@ -48,14 +48,13 @@ const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
     ],
   },
   {
-    methods: {
-      verifyPassword: async (password) =>
-        bcrypt.compare(password, (<IUser>(<unknown>this)).password),
-    },
     timestamps: true,
   }
 );
 
+UserSchema.methods.verifyPassword = async function verifyPassword(password) {
+  return bcrypt.compare(password, (<IUser>(<unknown>this)).password);
+};
 // methods definition
 // hashing the password
 UserSchema.pre("save", async function hashPassword(next) {

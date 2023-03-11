@@ -22,6 +22,16 @@ const UserDataSchema = Joi.object<IUser>().keys({
     .message("Password not secure"),
 });
 
+export const UserLoginSchema = Joi.object<
+  Pick<IUser, "password"> & Pick<IUser, "username" | "email">
+>()
+  .keys({
+    username: Joi.string(),
+    email: Joi.string().email(),
+    password: Joi.string(),
+  })
+  .or("username", "email");
+
 const userOTP = Joi.string().length(6);
 
 export const VerifyUserSchame = Joi.object<VerificationPayload>().keys({

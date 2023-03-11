@@ -12,6 +12,7 @@ async function sendMail(receiver: string, mailMessage: TMailMessage) {
     throw new ProgrammingError("MAIL details not provided!");
 
   try {
+    // todo: smtp server fails
     const transporter = nodemailer.createTransport({
       host: "smtp.ethereal.email",
       port: 587,
