@@ -17,6 +17,6 @@ export interface DRouteConfig {
 
 export type ListenerType = (
   req: ModifiedRequest,
-  res: Response,
+  res: Response | Record<string, any>,
   next: NextFunction
 ) => void;
