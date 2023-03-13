@@ -28,6 +28,7 @@ export interface ModifiedSocket extends Socket {
 
 export type Listener<TPayload> = (
   payload: TPayload,
+  modifiedSocket: ModifiedSocket,
   callBack?: (...args: any[]) => void
 ) => void;
 

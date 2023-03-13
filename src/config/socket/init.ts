@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
 import helmet from "helmet";
 import * as http from "http";
-import { EventEnums } from "../../lib/types/socket/events.type";
+import { EventEnums, ModifiedSocket } from "../../lib/types/socket/events.type";
 import ChildSocket from "./ChildSocket";
 import userSourcingToSocket from "../../middlewares/socket/userSourcing.middleware";
 
@@ -17,7 +17,9 @@ class SocketClass {
     this.name = name;
     // -------------mounting io middlewares------------------
     // 1. user sourcing middleware
-    this._socketServer.use(userSourcingToSocket);
+    this._socketServer.use((socket, next) =>
+      userSourcingToSocket(socket, {} as ModifiedSocket, next)
+    );
   }
 
   get socketServer() {
