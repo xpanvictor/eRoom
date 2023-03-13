@@ -1,4 +1,4 @@
-import { Socket } from "socket.io";
+import { Event, Socket } from "socket.io";
 import { EventEnums, Listener } from "../../lib/types/socket/events.type";
 
 class ChildSocket {
@@ -14,9 +14,15 @@ class ChildSocket {
 
   public attachListener<TPayload>(
     toWatchEvent: EventEnums,
-    listener: Listener<TPayload>
+    listener: Listener<TPayload>,
+    middlewares: Array<Listener<Event>> = []
   ) {
-    this._socket.on(toWatchEvent, listener);
+    this._socket.on(toWatchEvent, (payload: TPayload, cb: () => void) => {
+      middlewares.forEach((middleware) => {
+        this._socket.use((socket, next) => middleware(socket, next));
+      });
+      return listener(payload, cb);
+    });
   }
 }
 
