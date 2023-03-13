@@ -3,6 +3,7 @@ import helmet from "helmet";
 import * as http from "http";
 import { EventEnums } from "../../lib/types/socket/events.type";
 import ChildSocket from "./ChildSocket";
+import userSourcingToSocket from "../../middlewares/socket/userSourcing.middleware";
 
 class SocketClass {
   protected readonly _socketServer: Server;
@@ -14,6 +15,8 @@ class SocketClass {
     // sanitization
     this._socketServer.engine.use(helmet());
     this.name = name;
+    // mounting io middlewares
+    this._socketServer.use(userSourcingToSocket);
   }
 
   get socketServer() {
