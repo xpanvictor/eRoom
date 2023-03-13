@@ -4,7 +4,7 @@ import ProgrammingError from "../../error/technical/ProgrammingError";
 import wrapMiddlewareToSocket from "../../lib/chatChannel/WrapToSocket";
 import userSourcingMiddleware from "../userSourcing.middleware";
 
-// ? this has to break ts rules as masking of socket object has to be done
+// ! this breaks TS rules as masking of socket object has to be done
 const userSourcingToSocket: Listener<Socket> = (socket, next) => {
   const WrapperFn = wrapMiddlewareToSocket(userSourcingMiddleware);
   if (!next) {
@@ -16,7 +16,6 @@ const userSourcingToSocket: Listener<Socket> = (socket, next) => {
     socket.handshake.auth.token || socket.request.headers.authorization;
 
   WrapperFn(socket, next);
-  next();
 };
 
 export default userSourcingToSocket;

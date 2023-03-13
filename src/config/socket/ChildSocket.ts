@@ -1,8 +1,12 @@
 import { Event, Socket } from "socket.io";
-import { EventEnums, Listener } from "../../lib/types/socket/events.type";
+import {
+  EventEnums,
+  Listener,
+  ModifiedSocket,
+} from "../../lib/types/socket/events.type";
 
 class ChildSocket {
-  private readonly _socket: Socket;
+  private readonly _socket: Socket | ModifiedSocket;
 
   constructor(socket: Socket) {
     this._socket = socket;
