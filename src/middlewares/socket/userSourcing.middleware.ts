@@ -5,7 +5,7 @@ import wrapMiddlewareToSocket from "../../lib/chatChannel/WrapToSocket";
 import userSourcingMiddleware from "../userSourcing.middleware";
 
 // ! this breaks TS rules as masking of socket object has to be done
-const userSourcingToSocket: Listener<Socket> = (socket, next) => {
+const userSourcingToSocket: Listener<Socket> = (socket, _, next) => {
   const WrapperFn = wrapMiddlewareToSocket(userSourcingMiddleware);
   if (!next) {
     throw new ProgrammingError("Next function not passed to middleware");

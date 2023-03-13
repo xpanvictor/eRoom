@@ -22,10 +22,14 @@ class ChildSocket {
     middlewares: Array<Listener<Event>> = []
   ) {
     this._socket.on(toWatchEvent, (payload: TPayload, cb: () => void) => {
+      // middlewares array individual mounting
       middlewares.forEach((middleware) => {
-        this._socket.use((socket, next) => middleware(socket, next));
+        this._socket.use((socket, next) =>
+          middleware(socket, this.elemSocket as ModifiedSocket, next)
+        );
       });
-      return listener(payload, cb);
+
+      return listener(payload, this.elemSocket as ModifiedSocket, cb);
     });
   }
 }

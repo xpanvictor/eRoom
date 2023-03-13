@@ -3,8 +3,8 @@ import { ChatMessage } from "../../services/chatChannel/chatChannel.type";
 
 export const messageSchema = Joi.object<ChatMessage>({
   timestamp: Joi.date().timestamp().default(Date.now),
-  sender: Joi.string().required(),
-  channel: Joi.string(),
+  sender: Joi.string(),
+  channel: Joi.string().required(),
   message: Joi.string().required(),
 });
 
