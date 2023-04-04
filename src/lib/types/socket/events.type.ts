@@ -8,6 +8,7 @@ export enum EventEnums {
   message = "message",
   joinsRoom = "joinsRoom",
   leavesRoom = "leavesRoom",
+  error = "error",
 }
 
 const EventsMonitored: Record<string, Record<string, EventEnums>> = {
@@ -19,6 +20,7 @@ const EventsMonitored: Record<string, Record<string, EventEnums>> = {
     message: EventEnums.message,
     joinsRoom: EventEnums.joinsRoom,
     leavesRoom: EventEnums.leavesRoom,
+    error: EventEnums.error,
   },
 };
 
