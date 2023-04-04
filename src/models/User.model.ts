@@ -49,6 +49,12 @@ const UserSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>(
         ref: "Class",
       },
     ],
+    chatChannels: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "ChatChannel",
+      },
+    ],
   },
   {
     timestamps: true,

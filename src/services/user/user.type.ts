@@ -54,6 +54,8 @@ interface IUser {
   accessToken: string;
   // classes: Aligns to array of user's classes with type of membership
   classes: Types.Array<IClassesBelonged>;
+  // all chat channels
+  chatChannels: Types.Array<string>;
   // todo: map out remaining user type
 }
 

@@ -19,6 +19,8 @@ export default function createChatChannel(socketClass: SocketClass) {
         modifiedSocket?.request?.user?.user.username
       );
 
+      // todo: mount listener for all channels user belong to
+
       // routing: for all user events occurring
       socket?.attachListener<Partial<ChatMessage>>(
         EventsMonitored.userDefined.message,
