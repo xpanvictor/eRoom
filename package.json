@@ -19,6 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@socket.io/mongo-adapter": "^0.3.0",
     "axios": "^1.3.4",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
