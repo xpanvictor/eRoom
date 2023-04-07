@@ -22,10 +22,16 @@ const handleChat: Listener<Partial<ChatMessage>> = (
   // extract message data
   // extract channel data
   const { message, channel } = messagePayload;
+  const { channelId } = modifiedSocket;
+  if (!channelId) {
+    return modifiedSocket.emit(EventsMonitored.userDefined.error, {
+      err: "No channel Id provided.",
+    });
+  }
   // temporary channel data store
   // perform necessary action for event
   console.log(
-    `from: ${user?.user.username}; to channel ${channel}: ${message}`
+    `from: ${user?.user.username}; to channel ${channel}-${channelId}: ${message}`
   );
   if (typeof callBack === "function") {
     // ! sanitize or remove cb, security risk
