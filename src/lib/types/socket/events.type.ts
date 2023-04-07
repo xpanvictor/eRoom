@@ -26,6 +26,7 @@ const EventsMonitored: Record<string, Record<string, EventEnums>> = {
 
 export interface ModifiedSocket extends Socket {
   request: ModifiedRequest & IncomingMessage;
+  channelId: string;
 }
 
 export type Listener<TPayload> = (

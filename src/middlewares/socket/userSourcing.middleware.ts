@@ -14,6 +14,11 @@ const userSourcingToSocket: Listener<Socket> = (socket, _, next) => {
   // eslint-disable-next-line no-param-reassign
   socket.request.headers.authorization =
     socket.handshake.auth.token || socket.request.headers.authorization;
+  // pass socket channel id here as well
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  // eslint-disable-next-line no-param-reassign
+  socket.channelId = 3;
 
   WrapperFn(socket, next);
 };

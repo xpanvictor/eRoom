@@ -5,7 +5,7 @@ import ProgrammingError from "../../error/technical/ProgrammingError";
 import { ChatMessage } from "../../services/chatChannel/chatChannel.type";
 
 export default function createChatChannel(socketClass: SocketClass) {
-  // first we handle connection
+  // first we handle connection, todo: attach all channels to listen to here
   socketClass.attachListener(
     EventsMonitored.socketEvents.connection,
     (socket) => {
@@ -19,7 +19,7 @@ export default function createChatChannel(socketClass: SocketClass) {
         modifiedSocket?.request?.user?.user.username
       );
 
-      // todo: mount listener for all channels user belong to
+      // todo: mount listener for all channels user belongs to
 
       // routing: for all user events occurring
       socket?.attachListener<Partial<ChatMessage>>(
