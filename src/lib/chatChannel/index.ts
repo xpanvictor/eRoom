@@ -6,7 +6,7 @@ import { ChatMessage } from "../../services/chatChannel/chatChannel.type";
 import attachRoomsMiddleware from "../../middlewares/socket/attachRooms.middleware";
 
 export default function createChatChannel(socketClass: SocketClass) {
-  // first we handle connection, todo: attach all channels to listen to here
+  // first we handle connection
   socketClass.attachListener(
     EventsMonitored.socketEvents.connection,
     (socket) => {
