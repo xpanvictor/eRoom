@@ -3,6 +3,7 @@ import EventsMonitored, { ModifiedSocket } from "../types/socket/events.type";
 import handleChat from "../../services/chatChannel/chatChannel.controller";
 import ProgrammingError from "../../error/technical/ProgrammingError";
 import { ChatMessage } from "../../services/chatChannel/chatChannel.type";
+import attachRoomsMiddleware from "../../middlewares/socket/attachRooms.middleware";
 
 export default function createChatChannel(socketClass: SocketClass) {
   // first we handle connection, todo: attach all channels to listen to here
@@ -14,12 +15,11 @@ export default function createChatChannel(socketClass: SocketClass) {
         throw new ProgrammingError("User not identified");
       }
       // log a user intro
-      console.log(
-        "A user attached",
-        modifiedSocket?.request?.user?.user.username
-      );
+      const userService = modifiedSocket.request.user;
+      console.log("A user attached", userService.user.username);
 
-      // todo: mount listener for all channels user belongs to
+      // mount listener for all channels user belongs to
+      attachRoomsMiddleware(userService, modifiedSocket);
 
       // routing: for all user events occurring
       socket?.attachListener<Partial<ChatMessage>>(
