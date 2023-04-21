@@ -15,6 +15,7 @@ const userSourcingToSocket: Listener<Socket> = (socket, _, next) => {
   socket.request.headers.authorization =
     socket.handshake.auth.token || socket.request.headers.authorization;
   // pass socket channel id here as well
+  console.log(socket.rooms);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   // eslint-disable-next-line no-param-reassign

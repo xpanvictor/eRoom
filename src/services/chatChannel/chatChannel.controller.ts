@@ -37,12 +37,14 @@ const handleChat: Listener<Partial<ChatMessage>> = (
     // ! sanitize or remove cb, security risk
     callBack();
   }
-  // todo: perform actions to message
+  // use rooms instead to broadcast message
   // send message back to the socket except user
-  modifiedSocket.broadcast.emit(EventsMonitored.userDefined.message, {
-    message,
-    car: "car_liv",
-  });
+  modifiedSocket.broadcast
+    .to(channelId)
+    .emit(EventsMonitored.userDefined.message, {
+      message,
+      car: "car_liv",
+    });
   // permanently push channel data to mongo store
   return 1;
 };
