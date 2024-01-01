@@ -13,6 +13,8 @@ dotenv.config({
 });
 
 async function main() {
+  // check availability of env
+
   // HTTP server docked
   const httpServer = http.createServer(app);
   // Socket.io server docked

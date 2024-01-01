@@ -50,6 +50,12 @@ class UserController extends BaseController {
       // todo: user service generate tokens
       // generate otp and send
 
+      const mailMessage: TMailMessage = {
+        subject: "Welcome to eClass",
+        text: `Welcome ${newUser.name} to eClass. Follow up by verifying your account!`,
+      };
+      await new UserService(newUser).sendMail(mailMessage);
+
       this.populateData({
         message: `User ${newUser.username} created successfully`,
         result: newUser,
@@ -104,7 +110,7 @@ class UserController extends BaseController {
           // send pin through mail service; todo: format message
           const mailMessage: TMailMessage = {
             subject: "Verify yourself",
-            message: `Use this otp to verify yourself: ${pin}`,
+            text: `Use this otp to verify yourself: ${pin}`,
           };
           await authenticatedUser.sendMail(mailMessage);
 
