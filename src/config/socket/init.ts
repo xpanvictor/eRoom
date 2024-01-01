@@ -15,7 +15,6 @@ class SocketClass {
     // sanitization
     this._socketServer.engine.use(helmet());
     this.name = name;
-
     // -------------mounting io middlewares------------------
     // 1. user sourcing middleware
     this._socketServer.use((socket, next) =>
