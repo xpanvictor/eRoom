@@ -1,16 +1,21 @@
 import { Server, Socket } from "socket.io";
 import helmet from "helmet";
 import * as http from "http";
-import { EventEnums, ModifiedSocket } from "../../lib/types/socket/events.type";
+import {
+  EventEnums,
+  ModifiedSocket,
+  TNamespaceIDs,
+} from "../../lib/types/socket/events.type";
 import ChildSocket from "./ChildSocket";
 import userSourcingToSocket from "../../middlewares/socket/userSourcing.middleware";
+// import createChatChannel from "../../lib/chatChannel/manager";
 
 class SocketClass {
   protected readonly _socketServer: Server;
 
   public readonly name: string;
 
-  constructor(httpServer: http.Server, name = "Chat Socket") {
+  constructor(httpServer: http.Server, name: string) {
     this._socketServer = new Server(httpServer, {});
     // sanitization
     this._socketServer.engine.use(helmet());
@@ -24,6 +29,12 @@ class SocketClass {
 
   get socketServer() {
     return this._socketServer;
+  }
+
+  public initiateNamespaces(namespaceIDs: TNamespaceIDs) {
+    namespaceIDs.forEach((namespaceId) => {
+      this._socketServer.of(namespaceId);
+    });
   }
 
   public attachListener(

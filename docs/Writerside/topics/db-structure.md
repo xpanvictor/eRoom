@@ -9,5 +9,7 @@ The collections are sub-grouped on the following sockets
 ## User & Course
 Ths namespaces are to be opened on the initiation of the server. However,
 we can't run that on all the classes, this will kill the server. This is because a
-namespace is structured as a course
+namespace is structured as a course.
+
+-> Can wake up course namespace when a user activates the namespace
 
