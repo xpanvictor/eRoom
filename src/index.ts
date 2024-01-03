@@ -20,6 +20,7 @@ async function main() {
   // Socket.io server docked
   const ioServer = new SocketClass(httpServer);
   console.log(ioServer.name, "socket has been connected");
+  // todo: create webRTC socket as well
   // pass socket class to chat channel originator
   createChatChannel(ioServer);
   // handle runtime ignored errors

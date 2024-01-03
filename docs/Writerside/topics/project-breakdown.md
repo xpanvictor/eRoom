@@ -18,12 +18,17 @@ academic session.
 
 
 
-## Glossary
+[//]: # (## Glossary)
 
-A definition list or a glossary:
+[//]: # ()
+[//]: # (A definition list or a glossary:)
 
-First Term
-: This is the definition of the first term.
+[//]: # ()
+[//]: # (First Term)
 
-Second Term
-: This is the definition of the second term.
+[//]: # (: This is the definition of the first term.)
+
+[//]: # ()
+[//]: # (Second Term)
+
+[//]: # (: This is the definition of the second term.)
