@@ -4,12 +4,8 @@ import handleChat from "../../services/chatChannel/chatChannel.controller";
 import ProgrammingError from "../../error/technical/ProgrammingError";
 import { ChatMessage } from "../../services/chatChannel/chatChannel.type";
 import attachRoomsMiddleware from "../../middlewares/socket/attachRooms.middleware";
-import { IClass } from "../../services/class/class.type";
 
 export default function createChatChannel(socketClass: SocketClass) {
-  // Should break down into the categories of namespaces here
-  const namespaces: Array<IClass["classId"]> = [];
-  socketClass.initiateNamespaces(namespaces);
   // first we handle connection
   socketClass.attachListener(
     EventsMonitored.socketEvents.connection,

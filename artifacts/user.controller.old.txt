@@ -25,6 +25,10 @@ import ProgrammingError from "../error/technical/ProgrammingError";
 import UserService from "../services/user/user.service";
 
 class UserController extends BaseController {
+  public async execute(): Promise<void> {
+    this.next();
+  }
+
   // post request to Register user
   public async userRegister() {
     // first fetch user object from request
@@ -175,7 +179,7 @@ class UserController extends BaseController {
     return 0;
   }
 
-  // post request to user login
+
   public async userLogin() {
     // first retrieve payload and validate
     const rawPayload = this.req.body;

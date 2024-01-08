@@ -4,7 +4,7 @@ import ProgrammingError from "../error/technical/ProgrammingError";
 import { ModifiedRequest, ResponseObject } from "./base.types";
 import responseSchema from "./schemas/base.schema";
 
-class BaseController {
+abstract class BaseController {
   protected req: ModifiedRequest;
 
   protected res: Response;
@@ -18,6 +18,21 @@ class BaseController {
     this.req = req; // find a way to justify this
     this.res = res;
     this.next = next;
+  }
+
+  // Abstract method Listener calls
+  public abstract execute(): Promise<void>;
+  // listener execute which calls user defined execute
+  public async execute_main() {
+    try {
+      // first call the user defined execute fn
+      await this.execute();
+      // then ensure to call respond
+      this.respond();
+    } catch (error) {
+      // todo: error handler from here
+      this.next(error);
+    }
   }
 
   public populateData(value: Partial<ResponseObject>) {

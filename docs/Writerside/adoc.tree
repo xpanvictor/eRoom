@@ -12,6 +12,7 @@
     <toc-element topic="socket-architecture.md">
         <toc-element topic="db-structure.md"/>
     </toc-element>
+    <toc-element topic="File-service.md"/>
     <toc-element topic="api-docs.md">
     </toc-element>
     <toc-element topic="API-quickstart.md"/>

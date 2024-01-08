@@ -429,7 +429,7 @@ paths:
         - user
       summary: Create list of users with given input array
       description: 'Creates list of users with given input array'
-      x-swagger-router-controller: UserController
+      x-swagger-router-controller: UserControllerOld
       operationId: createUsersWithListInput
       responses:
         '200':
@@ -534,7 +534,7 @@ paths:
       tags:
         - user
       summary: Update user
-      x-swagger-router-controller: UserController
+      x-swagger-router-controller: UserControllerOld
       description: This can only be done by the logged in user.
       operationId: updateUser
       parameters:

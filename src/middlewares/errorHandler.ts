@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import BaseController from "../controllers";
 import StandardError from "../error";
 import logError from "../utils/logError";
+import GenericController from "../controllers/generic.controller";
 
 function ErrorHandler(
   error: StandardError,
@@ -11,7 +11,7 @@ function ErrorHandler(
 ) {
   // check if error has been responded to
   if (res.headersSent) return next(error);
-  const baseControllerToRespond = new BaseController(req, res, next);
+  const baseControllerToRespond = new GenericController(req, res, next);
   baseControllerToRespond.populateData({
     message: error.message,
     statusCode: error.httpStatusCode,

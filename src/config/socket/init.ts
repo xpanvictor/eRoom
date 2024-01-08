@@ -1,4 +1,4 @@
-import { Server, Socket } from "socket.io";
+import { Namespace, Server, Socket } from "socket.io";
 import helmet from "helmet";
 import * as http from "http";
 import {
@@ -14,6 +14,9 @@ class SocketClass {
   protected readonly _socketServer: Server;
 
   public readonly name: string;
+
+  // array of namespaces, yet to determine the correct structure
+  public namespaces: Array<Namespace> = [];
 
   constructor(httpServer: http.Server, name: string) {
     this._socketServer = new Server(httpServer, {});
@@ -33,7 +36,7 @@ class SocketClass {
 
   public initiateNamespaces(namespaceIDs: TNamespaceIDs) {
     namespaceIDs.forEach((namespaceId) => {
-      this._socketServer.of(namespaceId);
+      this.namespaces.push(this._socketServer.of(namespaceId));
     });
   }
 
