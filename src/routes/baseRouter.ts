@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ControllerType, ListenerType, RouteMethods } from "./routes.type";
+import { ListenerType, RouteMethods } from "./routes.type";
 import { APIRoutesValues } from "./APIRoutes";
 
 class RouterClass {
