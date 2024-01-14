@@ -27,7 +27,7 @@ export interface IChatChannel {
   members: Types.Array<IUser>;
   // the chat history
   chatHistory: Types.Array<ChatMessage>;
-  // the users who are in the queue
+  // the users who are in the approval queue
   joinQueue: Types.Array<IUser>;
 }
 
