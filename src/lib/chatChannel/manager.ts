@@ -4,6 +4,7 @@ import handleChat from "../../services/chatChannel/chatChannel.controller";
 import ProgrammingError from "../../error/technical/ProgrammingError";
 import { ChatMessage } from "../../services/chatChannel/chatChannel.type";
 import attachRoomsMiddleware from "../../middlewares/socket/attachRooms.middleware";
+import logger from "../../utils/logger";
 
 export default function createChatChannel(socketClass: SocketClass) {
   // first we handle connection
@@ -16,7 +17,7 @@ export default function createChatChannel(socketClass: SocketClass) {
       }
       // log a user intro
       const userService = modifiedSocket.request.user;
-      console.log("A user attached", userService.user.username);
+      logger.info("A user attached", userService.user.username);
 
       // mount listener for all channels user belongs to
       attachRoomsMiddleware(userService, modifiedSocket);
@@ -30,6 +31,6 @@ export default function createChatChannel(socketClass: SocketClass) {
   );
   // lastly handle user disconnection
   socketClass.attachListener(EventsMonitored.socketEvents.disconnect, () => {
-    console.log("User disconnected");
+    logger.info("User disconnected");
   });
 }

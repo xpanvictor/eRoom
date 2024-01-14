@@ -1,6 +1,7 @@
 import EventsMonitored, { Listener } from "../../lib/types/socket/events.type";
 import { ChatMessage } from "./chatChannel.type";
 import { messageSchema } from "../../controllers/schemas/chatChannel.schema";
+import logger from "../../utils/logger";
 
 const handleChat: Listener<Partial<ChatMessage>> = (
   payload,
@@ -14,7 +15,7 @@ const handleChat: Listener<Partial<ChatMessage>> = (
     modifiedSocket.emit(EventsMonitored.userDefined.error, {
       err: error.message,
     });
-    return console.log("An error occurred", error);
+    return logger.error(error);
     // todo: proper socket error handling
   }
   // determine sender of the message
@@ -30,7 +31,7 @@ const handleChat: Listener<Partial<ChatMessage>> = (
   }
   // temporary channel data store
   // perform necessary action for event
-  console.log(
+  logger.info(
     `from: ${user?.user.username}; to channel ${channel}-${channelId}: ${message}`
   );
   if (typeof callBack === "function") {

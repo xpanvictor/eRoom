@@ -8,6 +8,7 @@ import connectMongo from "./config/db/connect";
 import SocketClass from "./config/socket/init";
 import genConsts from "./constants/gen-consts";
 import chatSocketHandler from "./lib/chatChannel";
+import logger from "./utils/logger";
 
 dotenv.config({
   path: path.join(__dirname, "../", ".env"),
@@ -20,7 +21,7 @@ async function main() {
   const httpServer = http.createServer(app);
   // Socket.io server docked
   const chatIOSocket = new SocketClass(httpServer, genConsts.CHAT_SOCKET);
-  console.log(chatIOSocket.name, "socket has been connected");
+  logger.info(`${chatIOSocket.name} socket has been connected`);
   // todo: create webRTC socket as well
   // fix: this uses createChatChannel(chatIOSocket)
   chatSocketHandler(chatIOSocket);
@@ -32,7 +33,7 @@ async function main() {
   // listener
   const { ENV, PORT } = serverConfig;
   httpServer.listen(PORT, () => {
-    console.log(`${ENV.toUpperCase()} 💯server listening at localhost:${PORT}`);
+    logger.info(`${ENV.toUpperCase()} 💯server listening at localhost:${PORT}`);
   });
 }
 

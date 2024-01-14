@@ -1,9 +1,10 @@
 import * as http from "http";
 import logError from "../../utils/logError";
+import logger from "../../utils/logger";
 
 const unhandledRejection = (server: http.Server) => {
   process.on("unhandledRejection", (error: Error) => {
-    console.log("!!!Xpan, an Unhandled Rejection");
+    logger.silly("!!!Xpan, an Unhandled Rejection");
     logError(error);
     server.close(() => process.exit(1));
   });
@@ -11,7 +12,7 @@ const unhandledRejection = (server: http.Server) => {
 
 const unhandledException = () => {
   process.on("uncaughtException", (error: Error) => {
-    console.log("!!!Xpan, an Uncaught Exception");
+    logger.silly("!!!Xpan, an Uncaught Exception");
     logError(error);
     process.exit(1);
   });

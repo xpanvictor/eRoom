@@ -3,6 +3,7 @@ import { Listener } from "../../lib/types/socket/events.type";
 import ProgrammingError from "../../error/technical/ProgrammingError";
 import wrapMiddlewareToSocket from "../../lib/chatChannel/WrapToSocket";
 import userSourcingMiddleware from "../userSourcing.middleware";
+import logger from "../../utils/logger";
 
 // ! this breaks TS rules as masking of socket object has to be done
 const userSourcingToSocket: Listener<Socket> = (socket, _, next) => {
@@ -15,7 +16,7 @@ const userSourcingToSocket: Listener<Socket> = (socket, _, next) => {
   socket.request.headers.authorization =
     socket.handshake.auth.token || socket.request.headers.authorization;
   // pass socket channel id here as well
-  console.log(socket.rooms);
+  logger.info(socket.rooms);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   // eslint-disable-next-line no-param-reassign
