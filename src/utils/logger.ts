@@ -4,6 +4,22 @@ import "winston-daily-rotate-file";
 const { combine, timestamp, label, prettyPrint } = format;
 const CATEGORY = "Received message";
 
+const alignColorsAndTime = format.combine(
+  format.colorize({
+    all: true,
+  }),
+  format.label({
+    label: "[LOGGER]",
+  }),
+  format.timestamp({
+    format: "YY-MM-DD HH:mm:ss",
+  }),
+  format.printf(
+    (info) =>
+      ` ${info.label}  ${info.timestamp}  ${info.level} : \n ${info.message}`
+  )
+);
+
 const logger = createLogger({
   level: "debug",
   format: combine(
@@ -24,7 +40,9 @@ const logger = createLogger({
       level: "error",
       filename: "logs/error.log",
     }),
-    new transports.Console(),
+    new transports.Console({
+      format: format.combine(format.colorize(), alignColorsAndTime),
+    }),
   ],
 });
 
