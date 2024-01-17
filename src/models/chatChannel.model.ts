@@ -34,6 +34,12 @@ const ChatChannelSchema = new mongoose.Schema<
       enum: ChatChannelTypes,
       required: [true, "Chat channel type not defined!"],
     },
+    joinQueue: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     members: [
       {
         type: mongoose.Types.ObjectId,
