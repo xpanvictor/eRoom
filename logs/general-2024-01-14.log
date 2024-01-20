@@ -196,3 +196,39 @@
   label: 'Received message',
   timestamp: 'Jan-14-2024 18:42:46'
 }
+{
+  message: 'CHAT_SOCKET socket has been connected',
+  level: 'info',
+  label: 'Received message',
+  timestamp: 'Jan-14-2024 19:07:06'
+}
+{
+  message: 'eclass connected with mongoose',
+  level: 'info',
+  label: 'Received message',
+  timestamp: 'Jan-14-2024 19:07:06'
+}
+{
+  message: 'DEV 💯server listening at localhost:4015',
+  level: 'info',
+  label: 'Received message',
+  timestamp: 'Jan-14-2024 19:07:06'
+}
+{
+  message: 'CHAT_SOCKET socket has been connected',
+  level: 'info',
+  label: 'Received message',
+  timestamp: 'Jan-14-2024 21:40:06'
+}
+{
+  message: 'eclass connected with mongoose',
+  level: 'info',
+  label: 'Received message',
+  timestamp: 'Jan-14-2024 21:40:06'
+}
+{
+  message: 'DEV 💯server listening at localhost:4015',
+  level: 'info',
+  label: 'Received message',
+  timestamp: 'Jan-14-2024 21:40:06'
+}
