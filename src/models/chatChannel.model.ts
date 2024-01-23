@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import {
+  ChannelPrivacyTypes,
   ChatChannelModel,
   ChatChannelTypes,
   IChatChannel,
@@ -33,6 +34,11 @@ const ChatChannelSchema = new mongoose.Schema<
       type: String,
       enum: ChatChannelTypes,
       required: [true, "Chat channel type not defined!"],
+    },
+    chatChannelPrivacy: {
+      type: String,
+      enum: ChannelPrivacyTypes,
+      default: ChannelPrivacyTypes.PUBLIC,
     },
     joinQueue: [
       {

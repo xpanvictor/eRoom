@@ -6,6 +6,10 @@ export enum ChatChannelTypes {
   Personal = "personal",
 }
 
+export enum ChannelPrivacyTypes {
+  PUBLIC = "PUBLIC",
+  PRIVATE = "PRIVATE",
+}
 export interface ChatMessage {
   timestamp: Date;
   sender: Pick<IUser, "id">;
@@ -29,6 +33,8 @@ export interface IChatChannel {
   chatHistory: Types.Array<ChatMessage>;
   // the users who are in the approval queue
   joinQueue: Types.Array<IUser>;
+  // privacy of the channel
+  chatChannelPrivacy: ChannelPrivacyTypes;
 }
 
 export interface IChatChannelMethods {
