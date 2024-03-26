@@ -1,5 +1,6 @@
 import { NextFunction, Response } from "express";
 import { ModifiedRequest } from "../controllers/base.types";
+import BaseController from "../controllers";
 
 export enum RouteMethods {
   GET = "get",
@@ -20,3 +21,5 @@ export type ListenerType = (
   res: Response,
   next: NextFunction
 ) => void;
+
+export type ControllerType = BaseController;

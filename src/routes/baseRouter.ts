@@ -22,11 +22,13 @@ class RouterClass {
     // the path to listen, use APIRoutes object
     path: APIRoutesValues,
     // the path listener function, feeds in req, res and next; return void
-    listener: ListenerType,
+    Listener: any, // todo: Fix the appropriate type (BaseController is an abstract)
     // listeners to append to route
     middlewares: Array<ListenerType> = []
   ) {
-    this._routerElement[method](path, ...middlewares, listener);
+    this._routerElement[method](path, ...middlewares, (...args) =>
+      new Listener(...args).execute_main()
+    );
   }
 }
 

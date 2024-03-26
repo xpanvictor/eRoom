@@ -17,6 +17,7 @@ const serverConfig = {
   // gmail service
   MAIL_USER: process.env.MAIL_USER,
   MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+  DOMAIN: "auth@eClass.com",
 };
 
 export default serverConfig;

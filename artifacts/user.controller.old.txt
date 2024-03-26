@@ -25,6 +25,10 @@ import ProgrammingError from "../error/technical/ProgrammingError";
 import UserService from "../services/user/user.service";
 
 class UserController extends BaseController {
+  public async execute(): Promise<void> {
+    this.next();
+  }
+
   // post request to Register user
   public async userRegister() {
     // first fetch user object from request
@@ -49,6 +53,12 @@ class UserController extends BaseController {
       await newUser.save();
       // todo: user service generate tokens
       // generate otp and send
+
+      const mailMessage: TMailMessage = {
+        subject: "Welcome to eClass",
+        text: `Welcome ${newUser.name} to eClass. Follow up by verifying your account!`,
+      };
+      await new UserService(newUser).sendMail(mailMessage);
 
       this.populateData({
         message: `User ${newUser.username} created successfully`,
@@ -104,7 +114,7 @@ class UserController extends BaseController {
           // send pin through mail service; todo: format message
           const mailMessage: TMailMessage = {
             subject: "Verify yourself",
-            message: `Use this otp to verify yourself: ${pin}`,
+            text: `Use this otp to verify yourself: ${pin}`,
           };
           await authenticatedUser.sendMail(mailMessage);
 
@@ -169,7 +179,7 @@ class UserController extends BaseController {
     return 0;
   }
 
-  // post request to user login
+
   public async userLogin() {
     // first retrieve payload and validate
     const rawPayload = this.req.body;

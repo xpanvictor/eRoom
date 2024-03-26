@@ -6,20 +6,25 @@ import app = require("./App");
 import Exception = require("./error/RejectionException/unhandled");
 import connectMongo from "./config/db/connect";
 import SocketClass from "./config/socket/init";
-import createChatChannel from "./lib/chatChannel";
+import genConsts from "./constants/gen-consts";
+import chatSocketHandler from "./lib/chatChannel";
+import logger from "./utils/logger";
 
 dotenv.config({
   path: path.join(__dirname, "../", ".env"),
 });
 
 async function main() {
+  // check availability of env
+
   // HTTP server docked
   const httpServer = http.createServer(app);
   // Socket.io server docked
-  const ioServer = new SocketClass(httpServer);
-  console.log(ioServer.name, "socket has been connected");
-  // pass socket class to chat channel originator
-  createChatChannel(ioServer);
+  const chatIOSocket = new SocketClass(httpServer, genConsts.CHAT_SOCKET);
+  logger.info(`${chatIOSocket.name} socket has been connected`);
+  // todo: create webRTC socket as well
+  // fix: this uses createChatChannel(chatIOSocket)
+  chatSocketHandler(chatIOSocket);
   // handle runtime ignored errors
   Exception.unhandledRejection(httpServer);
   Exception.unhandledException();
@@ -28,7 +33,7 @@ async function main() {
   // listener
   const { ENV, PORT } = serverConfig;
   httpServer.listen(PORT, () => {
-    console.log(`${ENV.toUpperCase()} 💯server listening at localhost:${PORT}`);
+    logger.info(`${ENV.toUpperCase()} 💯server listening at localhost:${PORT}`);
   });
 }
 

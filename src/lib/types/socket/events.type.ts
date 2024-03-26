@@ -29,6 +29,8 @@ export interface ModifiedSocket extends Socket {
   channelId: string;
 }
 
+export type TNamespaceIDs = Array<string>; // for now uses just string
+
 export type Listener<TPayload> = (
   payload: TPayload,
   modifiedSocket: ModifiedSocket,
